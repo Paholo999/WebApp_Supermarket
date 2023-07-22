@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb mb-4 mt-3">
+    <li class="breadcrumb-item"><a href="index.html">Summary</a></li>
+    <li class="breadcrumb-item active">Users</li>
+</ol>
+
+<section class="py-5">
+    <div class="container">
+        <!-- FOR DEMO PURPOSE -->
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <header class="text-center pb-5">
+                    <h2><i class="fas fa-users"></i></h2>
+                    <h1 class="h2">User List</h1>
+                </header>
+            </div>
+        </div><!-- END -->
+
+
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+
+                <!-- CUSTOM BLOCKQUOTE -->
+                <blockquote class=" bg-white p-3 shadow rounded">
+                    <button type="button" class="btn btn-outline-dark">Create User</button>
+                    <hr />
+                    <table id="table" class="display cell-border" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Names</th>
+                                <th>Surnames</th>
+                                <th>Mail</th>
+                                <th>Asset</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </blockquote><!-- END -->
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script>
+
+        jQuery.ajax({
+            url: '@Url.Action("UserList","Home")',
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                console.log(data)
+            }
+
+        })
+
+        tabledata = $('#table').DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("UserList","Home")',
+                type: 'GET',
+                dataType: 'json',
+            },
+            "columns": [
+                { "data": "Names" },
+                { "data": "Surnames" },
+                { "data": "Mail" },
+                {
+                    "data": "Asset", "render": function (value) {
+                        if (value) {
+                            return '<span class="badge bg-success">Si</span>'
+                        } else {
+                            return '<span class="badge bg-danger">No</span>'
+                        }
+
+                    },
+                    {
+                        "defaultContent":'<button type="button" class="btn btn-outline-dark">Create User</button>'
+                        
+                    }
+                    
+                }
+}
+            ]
+
+            });
+
+    </script>
+    }
